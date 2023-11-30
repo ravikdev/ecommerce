@@ -1,9 +1,15 @@
 import express from 'express';
 import dotenv from 'dotenv';
+import ConnectDb from './config/db';
 const app = express();
-dotenv.config()//Calling config function
+
+//Config Environment
+dotenv.config()
 
 const PORT = process.env.PORT
+
+//data base config
+ConnectDb();
 
 app.get('/',(req,res)=>{
     res.send("This is running");
