@@ -1,17 +1,17 @@
 import userModel from "../models/usermodel.js";
-
+import JWT from "jsonwebtoken";
 import { comparePassword, hashPassword } from "../helpers/authhelper.js";
-import e from "express";
+// const { JsonWebTokenError } = pkg;
+
 
 export const registerController =async(req,res)=>{
 try{
 
-    const {name,email,phone,address} =req.body;
+    const {name,email,phone,address,password} =req.body;
 
     if(!name){
         return res.send("name is required");
     }
-
     if(!email){
         return res.send("email is required");
     }
@@ -31,7 +31,7 @@ try{
         })
     }
     // Register User
-    const hashedPassword = await hashPassword();
+    const hashedPassword = await hashPassword(password);
     //Save
     const user = await new userModel({name,email,phone,password:hashedPassword,address}).save();
     res.status(200).send({
@@ -39,14 +39,62 @@ try{
         message:'User Register Successfully',
         user
     })
-    }
-catch(error){
+    
+} catch (error) {
     console.log(error);
     res.status(500).send({
-        success: false,
-        message:'Error in rigistration',
-        error
-    })
-}
-}
+      success: false,
+      message: "Error in registration",
+      error,
+    });
+  }
+};
+
+export const loginController =async(req,res)=>{
+    try{
+        const {email, password} = req.body
+        if(!email || !password){
+            res.status(404).send({
+                message:'invvalid email id or password',
+                success: false
+            })
+        }
+        // check user
+        const user = await userModel.findOne({email})
+        if (!user){
+            res.status(404).send({
+                message:'Emaill not register'
+            })
+        }
+        const match = await comparePassword(password,user.password);
+        if (!match) {
+            return res.status(200).send({
+              success: false,
+              message: "Invalid Password",
+            });
+          }
+        //Token
+        const token= await JWT.sign({_id: user._id},process.env.JWT_SECRET,{
+            expiresIn:"7d"
+        })
+        res.status(200).send({
+            message: 'Login succeful',
+            user :{
+                name : user.name,
+                email: user.email,
+                phone: user.phone,
+                address: user.address
+            },
+            token,
+        });
+    
+
+} catch (error) {
+    console.log("error in login",error);
+    res.status(400).send({
+      success: false,
+      message: "error in login",
+      error,
+    });
+  }};
 

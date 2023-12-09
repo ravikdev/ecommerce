@@ -1,10 +1,12 @@
 import mongoose from "mongoose";
 // getting-started.js
 
-
-const connectDb = async ()=> {
+const connectDb = async () => {
     try{
-      await mongoose.connect('mongodb+srv://devzamark:Ra7206651200@democluster.ckrcctd.mongodb.net/ecommerce');
+      const conn = await mongoose.connect(process.env.MONGO_URI);
+      console.log(
+        `Conneted To Mongodb Databse ${conn.connection.host}`
+      );
     }
     catch(error){
         console.log('the erroe while conneting mongo db', error);
