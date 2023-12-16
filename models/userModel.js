@@ -24,8 +24,12 @@ const userSchema = new mongoose.Schema(
         address:{
             type:String,
             require:true
-        }
-    }
+        },
+        role:{
+            type:Number,
+            require:true
+        }   
+     }
 )
 
 export default mongoose.model("users",userSchema);

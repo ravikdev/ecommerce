@@ -7,7 +7,7 @@ import { comparePassword, hashPassword } from "../helpers/authhelper.js";
 export const registerController =async(req,res)=>{
 try{
 
-    const {name,email,phone,address,password} =req.body;
+    const {name,email,phone,address,password,role} =req.body;
 
     if(!name){
         return res.send("name is required");
@@ -33,13 +33,13 @@ try{
     // Register User
     const hashedPassword = await hashPassword(password);
     //Save
-    const user = await new userModel({name,email,phone,password:hashedPassword,address}).save();
+    const user = await new userModel({name,email,phone,password:hashedPassword,address,role}).save();
     res.status(200).send({
         success:true,
         message:'User Register Successfully',
         user
     })
-    
+
 } catch (error) {
     console.log(error);
     res.status(500).send({
@@ -63,7 +63,7 @@ export const loginController =async(req,res)=>{
         const user = await userModel.findOne({email})
         if (!user){
             res.status(404).send({
-                message:'Emaill not register'
+                message:'Email not register'
             })
         }
         const match = await comparePassword(password,user.password);
@@ -73,19 +73,23 @@ export const loginController =async(req,res)=>{
               message: "Invalid Password",
             });
           }
+
         //Token
+        // User Id will be included in the payload.
         const token= await JWT.sign({_id: user._id},process.env.JWT_SECRET,{
             expiresIn:"7d"
         })
         res.status(200).send({
             message: 'Login succeful',
             user :{
+                _id: user._id,
                 name : user.name,
                 email: user.email,
                 phone: user.phone,
-                address: user.address
+                address: user.address,
+                role: user.role
             },
-            token,
+            token
         });
     
 
@@ -97,4 +101,12 @@ export const loginController =async(req,res)=>{
       error,
     });
   }};
-
+  
+  export const testController = async(req,res)=>{
+    try{
+        res.send("proceted route");
+     }
+    catch(error){
+        console.log(error);
+    }
+  }
