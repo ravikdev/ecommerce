@@ -1,5 +1,5 @@
 import JWT from 'jsonwebtoken';
-import usermodel from '../models/usermodel.js';
+import userModel from '../models/usermodel.js';
 //Protected Route Token Based
 export const requireSignIn = async(req,res,next)=>{
     try{
@@ -8,6 +8,7 @@ export const requireSignIn = async(req,res,next)=>{
             );
             req.user = decode; 
             // acessing id
+            console.log(decode);
         next();
     }
     catch(error){
@@ -18,7 +19,7 @@ export const requireSignIn = async(req,res,next)=>{
 
 export const isAdmin = async (req, res, next) => {
     try {
-      const user = await usermodel.findById(req.user._id);
+      const user = await userModel.findById(req.user._id);
       if (user.role !== 1) {
         return res.status(401).send({
           success: false,

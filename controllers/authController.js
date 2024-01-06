@@ -10,18 +10,20 @@ try{
     const {name,email,phone,address,password,role} =req.body;
 
     if(!name){
-        return res.send("name is required");
+        return res.message("name is required");
     }
     if(!email){
-        return res.send("email is required");
+        return res.message("email is required");
     }
     if(!phone){
-        return res.send("phone is required");
+        return res.message("phone is required");
     }
     if(!address){
-        res.send("address is required");
+        res.message("address is required");
     }
+    
     // check user
+    
     const exisitingUser = await userModel.findOne({email})
     //
     if(exisitingUser){
@@ -61,6 +63,7 @@ export const loginController =async(req,res)=>{
         }
         // check user
         const user = await userModel.findOne({email})
+        //User model is an object which have findOne method
         if (!user){
             res.status(404).send({
                 message:'Email not register'

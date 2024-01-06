@@ -1,0 +1,5 @@
+# React build
+client/build/
+client/node_modules/
+# Node.js dependencies
+node_modules/

@@ -3,6 +3,8 @@ import dotenv from 'dotenv';
 import connectDB from "./config/db.js";
 import morgan from "morgan";
 import authRoutes from "./routes/authRoutes.js";
+import cors from "cors";
+
 
 const app = express();
 dotenv.config()//Calling config function
@@ -14,6 +16,7 @@ dotenv.config();
 connectDB();
 
 //middelwares
+app.use(cors());
 app.use(express.json());
 app.use(morgan("dev"));
 

@@ -1,4 +1,6 @@
 import bcrypt from "bcrypt"; 
+import { loginController } from "../controllers/authController.js";
+import userodel from "../models/usermodel.js";
 
 export const hashPassword = async(password) =>{
     try{
@@ -14,3 +16,4 @@ export const hashPassword = async(password) =>{
 export const comparePassword = async(password,hashedPassword)=>{
     return bcrypt.compare(password, hashedPassword);
 };
+
