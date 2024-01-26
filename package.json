@@ -24,6 +24,7 @@
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.0.1",
     "morgan": "^1.10.0",
+    "newrelic": "^11.8.0",
     "nodemon": "^3.0.2",
     "react-toastify": "^9.1.3"
   }

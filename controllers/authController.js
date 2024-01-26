@@ -83,7 +83,8 @@ export const loginController =async(req,res)=>{
             expiresIn:"7d"
         })
         res.status(200).send({
-            message: 'Login succeful',
+            success : true,
+            message: 'Login successful',
             user :{
                 _id: user._id,
                 name : user.name,
@@ -107,7 +108,7 @@ export const loginController =async(req,res)=>{
   
   export const testController = async(req,res)=>{
     try{
-        res.send("proceted route");
+        res.send("protected route");
      }
     catch(error){
         console.log(error);

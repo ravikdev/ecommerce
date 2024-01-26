@@ -1,7 +1,7 @@
 import React from 'react'
 
 import Layout from '../components/Layout/Layout'
-
+//About is parent component 
 const About = () => {
   return (
     <div> 
