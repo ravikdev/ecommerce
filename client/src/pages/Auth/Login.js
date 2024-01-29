@@ -8,6 +8,7 @@ import { useAuth } from '../../context/auth';
 const Login = () => {
     const [email, setEmail] = useState("");
     const [password,setPassword] =useState("");
+    const [auth,setAuth] = useAuth();
 
     const navigate = useNavigate(); // using hook with constant  )
 
@@ -21,6 +22,13 @@ const Login = () => {
         
         if (res && res.data.success){
             toast.success(res.data.message);
+            setAuth({
+                ...auth,user:res.data.user, 
+                token: res.data.token,
+                // user will updata the data and ...auth will keep the previous properties.
+            });     
+            localStorage.setItem("auth",JSON.stringify(res.data))
+            
             navigate('/');
         } else {
             toast.error(res.data.message);
@@ -31,7 +39,6 @@ const Login = () => {
             toast.error("something went wrong");
         }
     }
-    
     
   return (
     <Layout tittle="Register -Ecommerce App">

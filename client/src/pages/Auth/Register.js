@@ -42,7 +42,6 @@ const Register = () => {
         }
 
     }
-    console.log(process.env.REACT_APP_API);
 
     return (
     <Layout tittle="Register -Ecommerce App">
