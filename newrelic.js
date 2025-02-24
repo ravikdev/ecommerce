@@ -5,14 +5,17 @@
  * See lib/config/default.js in the agent distribution for a more complete
  * description of configuration variables and their potential values.
  */
+
 exports.config = {
   /**
    * Array of application names.
    */
   app_name: ['test-newrelic'],
+  
   /**
    * Your New Relic license key.
    */
+
   license_key: '8dcade2728c9965f094fffcbedbb5a53FFFFNRAL',
   logging: {
     /**
