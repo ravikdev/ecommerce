@@ -1,40 +1,40 @@
-name: CI/CD Pipeline
+# name: CI/CD Pipeline
 
-on:
-  push:
-    branches:
-      - master
-  pull_request:
-    branches:
-      - master
+# on:
+#   push:
+#     branches:
+#       - master
+#   pull_request:
+#     branches:
+#       - master
 
-jobs:
-  build-and-test:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+# jobs:
+#   build-and-test:
+#     runs-on: ubuntu-latest
+#     steps:
+#       - name: Checkout code
+#         uses: actions/checkout@v4
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '18'
+#       - name: Setup Node.js
+#         uses: actions/setup-node@v4
+#         with:
+#           node-version: '18'
 
-      - name: Install dependencies
-        run: npm install
+#       - name: Install dependencies
+#         run: npm install
 
-      - name: Run tests
-        run: npm test
+#       - name: Run tests
+#         run: npm test
 
-  # deploy:
-  #   needs: build-and-test
-  #   runs-on: ubuntu-latest
-  #   if: github.ref == 'refs/heads/main'
-  #   steps:
-  #     - name: Checkout code
-  #       uses: actions/checkout@v4
+#   # deploy:
+#   #   needs: build-and-test
+#   #   runs-on: ubuntu-latest
+#   #   if: github.ref == 'refs/heads/main'
+#   #   steps:
+#   #     - name: Checkout code
+#   #       uses: actions/checkout@v4
 
-  #     - name: Deploy application
-  #       run: |
-  #         echo "Deploying application..."
-  #         # Add your deployment script or commands here
+#   #     - name: Deploy application
+#   #       run: |
+#   #         echo "Deploying application..."
+#   #         # Add your deployment script or commands here
