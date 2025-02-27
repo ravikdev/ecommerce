@@ -29,18 +29,18 @@ app.get('/',(req,res)=>{
     res.send("This is running");
 })
 
-app.get('/login-test', (req, res) => {
-    const { username, password } = req.query;
-    const query = `SELECT * FROM users WHERE username = '${username}' AND password = '${password}'`;
+// app.get('/login-test', (req, res) => {
+//     const { username, password } = req.query;
+//     const query = `SELECT * FROM users WHERE username = '${username}' AND password = '${password}'`;
     
-    db.get(query, [], (err, row) => {
-        if (row) {
-            res.send("Login successful! Welcome, " + row.username);
-        } else {
-            res.send("Invalid credentials");
-        }
-    });
-});
+//     db.get(query, [], (err, row) => {
+//         if (row) {
+//             res.send("Login successful! Welcome, " + row.username);
+//         } else {
+//             res.send("Invalid credentials");
+//         }
+//     });
+// });
 
 // Vulnerable XSS Endpoint
 app.get('/greet', (req, res) => {
