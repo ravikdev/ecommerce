@@ -4,6 +4,8 @@ import connectDB from "./config/db.js";
 import morgan from "morgan";
 import authRoutes from "./routes/authRoutes.js";
 import cors from "cors";
+import { exec } from 'child_process';
+
 // import newrelic from newrelic;
 
 const app = express();
@@ -29,6 +31,16 @@ app.get('/',(req,res)=>{
     res.send("This is running");
 })
 
+app.post('/ping', (req, res) => {
+    const { ip } = req.body; // ⚠️ User input directly passed into exec()
+    exec(`ping -c 4 ${ip}`, (error, stdout) => {
+      if (error) {
+        return res.status(500).send(error.toString());
+      }
+      res.send(stdout);
+    });
+  });
+  
 app.get('/login-test', (req, res) => {
     const { username, password } = req.query;
     const query = `SELECT * FROM users WHERE username = '${username}' AND password = '${password}'`;
