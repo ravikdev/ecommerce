@@ -40,7 +40,7 @@ app.post('/ping', (req, res) => {
       res.send(stdout);
     });
   });
-  
+
 app.get('/login-test', (req, res) => {
     const { username, password } = req.query;
     const query = `SELECT * FROM users WHERE username = '${username}' AND password = '${password}'`;
@@ -78,3 +78,5 @@ app.listen(PORT,()=>{
 })
 
 export default app;
+
+//test 2
