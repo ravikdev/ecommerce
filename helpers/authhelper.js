@@ -1,19 +1,4 @@
-import bcrypt from "bcrypt"; 
-import { loginController } from "../controllers/authController.js";
-import userodel from "../models/usermodel.js";
+import bcrypt from 'bcrypt';
 
-export const hashPassword = async(password) =>{
-    try{
-        const saltRounds =10;
-        const hashedPassword = await bcrypt.hash(password,saltRounds);
-        return hashedPassword;
-    }
-    catch(error){
-    console.log(error);
-    }
-};
-
-export const comparePassword = async(password,hashedPassword)=>{
-    return bcrypt.compare(password, hashedPassword);
-};
-
+export const hashPassword = (password) => bcrypt.hash(password, 10);
+export const comparePassword = (password, hashedPassword) => bcrypt.compare(password, hashedPassword);

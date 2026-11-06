@@ -1,82 +1,33 @@
 import express from 'express';
-import dotenv from 'dotenv';
-import connectDB from "./config/db.js";
-import morgan from "morgan";
-import authRoutes from "./routes/authRoutes.js";
-import cors from "cors";
-import { exec } from 'child_process';
-
-// import newrelic from newrelic;
+import morgan from 'morgan';
+import cors from 'cors';
+import authRoutes from './routes/authRoutes.js';
 
 const app = express();
-dotenv.config()//Calling config function
-
-//configure env
-dotenv.config();
-
-//databse config
-connectDB();
-
-//middelwares
+app.disable('x-powered-by');
+app.use((req, res, next) => {
+  res.set('X-Content-Type-Options', 'nosniff');
+  next();
+});
 app.use(cors());
-app.use(express.json());
-app.use(morgan("dev"));
+app.use(express.json({ limit: '16kb' }));
+app.use(morgan('dev'));
+app.use('/api/v1/auth', authRoutes);
 
-//route
-app.use("/api/v1/auth", authRoutes);
-
-const PORT = process.env.PORT
-//test3
-app.get('/',(req,res)=>{
-    res.send("This is running");
-})
-
-app.post('/ping', (req, res) => {
-    const { ip } = req.body; // ⚠️ User input directly passed into exec()
-    exec(`ping -c 4 ${ip}`, (error, stdout) => {
-      if (error) {
-        return res.status(500).send(error.toString());
-      }
-      res.send(stdout);
-    });
-  });
-
-app.get('/login-test', (req, res) => {
-    const { username, password } = req.query;
-    const query = `SELECT * FROM users WHERE username = '${username}' AND password = '${password}'`;
-    
-    db.get(query, [], (err, row) => {
-        if (row) {
-            res.send("Login successful! Welcome, " + row.username);
-        } else {
-            res.send("Invalid credentials");
-        }
-    });
+app.get('/', (req, res) => {
+  res.send('This is running');
 });
 
-app.get('/login-test-2', (req, res) => {
-    const { username, password } = req.query;
-    const query = `SELECT * FROM users WHERE username = '${username}' AND password = '${password}'`;
-    
-    db.get(query, [], (err, row) => {
-        if (row) {
-            res.send("Login successful! Welcome, " + row.username);
-        } else {
-            res.send("Invalid credentials");
-        }
-    });
-});
-
-
-// Vulnerable XSS Endpoint
+// Diagnostic command execution and SQL login test routes are intentionally removed.
 app.get('/greet', (req, res) => {
-    const name = req.query.name;
-    res.send(`<h1>Hello, ${name}</h1>`); // No sanitization
+  const name = typeof req.query.name === 'string' ? req.query.name : 'Guest';
+  res.type('text/plain').send(`Hello, ${name}`);
 });
-app.listen(PORT,()=>{
-    console.log(`server is runnning`, PORT);
-})
+
+// Never expose parser errors or stack traces to callers.
+app.use((error, req, res, next) => {
+  const status = error.status === 400 || error.status === 413 ? error.status : 500;
+  res.status(status).send({ success: false, message: status === 500 ? 'Internal server error' : 'Invalid request body' });
+});
 
 export default app;
-
-//test 2

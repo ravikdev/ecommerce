@@ -8,4 +8,7 @@ node_modules/
 build/
 dist/
 
-
+# Local credentials and environment overrides
+.env
+.env.*
+!.env.example
